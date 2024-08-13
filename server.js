@@ -13,19 +13,20 @@ app.use(bodyParser.json()) // Для обработки JSON-запросов
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
 
 const JWT_SECRET = 'AngularProjectToken' // Секретный ключ для токенов
+const JWT_REFRESH_SECRET = 'AngularRefreshToken' // Секретный ключ для рефреш-токенов
 
 // Простая база данных пользователей
 const users = [
 	{
 		id: 1,
 		username: 'user1',
-		password: bcrypt.hashSync('password123', 10), // Захешированный пароль
+		password: bcrypt.hashSync('123', 10), // Захешированный пароль
 		profileId: 1, // ID профиля
 	},
 	{
 		id: 2,
 		username: 'user2',
-		password: bcrypt.hashSync('password456', 10),
+		password: bcrypt.hashSync('456', 10),
 		profileId: 2,
 	},
 ]
@@ -104,12 +105,12 @@ app.post('/api/login', (req, res) => {
 	const accessToken = jwt.sign(
 		{ id: user.id, username: user.username, profileId: user.profileId },
 		JWT_SECRET,
-		{ expiresIn: '1h' }
+		{ expiresIn: '1m' }
 	)
 	const refreshToken = jwt.sign(
 		{ id: user.id, username: user.username, profileId: user.profileId },
-		JWT_SECRET,
-		{ expiresIn: '7d' }
+		JWT_REFRESH_SECRET,
+		{ expiresIn: '24h' }
 	)
 
 	// Возвращаем токены клиенту
@@ -119,9 +120,55 @@ app.post('/api/login', (req, res) => {
 	})
 })
 
+// Маршрут для обновления токена
+app.post('/api/refresh-token', (req, res) => {
+	const { refreshToken } = req.body
+	if (!refreshToken) {
+		return res.status(401).json({ message: 'Refresh token required' })
+	}
+
+	jwt.verify(refreshToken, JWT_REFRESH_SECRET, (err, user) => {
+		if (err) {
+			return res.status(403).json({ message: 'Invalid refresh token' })
+		}
+
+		// Создание нового access токена
+		const accessToken = jwt.sign(
+			{ id: user.id, username: user.username, profileId: user.profileId },
+			JWT_SECRET,
+			{ expiresIn: '1m' }
+		)
+
+		res.json({ accessToken })
+	})
+})
+
+// Middleware для аутентификации
+function authenticateToken(req, res, next) {
+	const authHeader = req.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
+
+	if (token == null) return res.sendStatus(401)
+
+	jwt.verify(token, JWT_SECRET, (err, user) => {
+		if (err) return res.sendStatus(403)
+		req.user = user
+		next()
+	})
+}
+
 // Маршрут для получения профилей
 app.get('/api/profiles', (req, res) => {
 	res.json(profiles)
+})
+
+// Маршрут для получения данных профиля текущего пользователя
+app.get('/api/account/me', authenticateToken, (req, res) => {
+	const profile = profiles.find(p => p.id === req.user.profileId)
+	if (!profile) {
+		return res.status(404).json({ message: 'Profile not found' })
+	}
+	res.json(profile)
 })
 
 app.listen(port, () => {
