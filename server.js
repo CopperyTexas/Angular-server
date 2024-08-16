@@ -31,10 +31,9 @@ const users = [
 			'Immortality',
 			'Superior Marksmanship',
 		],
-		subscriptionsAmount: '0',
 		isActive: true,
 		avatar: 'http://localhost:3000/assets/deadpool.png',
-		subscribers: [2],
+		subscribers: [2, 3, 4, 5],
 	},
 	{
 		id: 2,
@@ -52,7 +51,6 @@ const users = [
 			'Superhuman Speed',
 			'Superhuman Reflexes',
 		],
-		subscriptionsAmount: '0',
 		isActive: true,
 		avatar: 'http://localhost:3000/assets/wolverine.png',
 		subscribers: [1, 3],
@@ -71,10 +69,51 @@ const users = [
 			'Superhuman Strength',
 			'Genius Intelligence',
 		],
-		subscriptionsAmount: '0',
 		isActive: true,
 		avatar: 'http://localhost:3000/assets/ironman.png',
 		subscribers: [],
+	},
+	{
+		id: 4,
+		username: 'user4',
+		password: bcrypt.hashSync('789', 10),
+		name: 'Max Eisenhardt',
+		nickname: 'Magneto',
+		description:
+			'Using his mighty ability to control magnetic fields, the one called Magneto fights to help mutants replace humans as the worlds dominant species.',
+		power: [
+			'Control of Elements',
+			'Magnetism',
+			'Energy Manipulation',
+			'Flight',
+			'Superhuman Intelligence',
+			'Superhuman Speed',
+			'Force Field',
+		],
+		isActive: true,
+		avatar: 'http://localhost:3000/assets/magneto.png',
+		subscribers: [3],
+	},
+	{
+		id: 5,
+		username: 'user5',
+		password: bcrypt.hashSync('789', 10),
+		name: 'Scott Summers',
+		nickname: 'Cyclops',
+		description:
+			'From a stoic leader of the X-Men to a hardened radical, Cyclops is always true to mutantkind and determined to make Xavier’s dream of peace between mutants and humans a reality.',
+		power: [
+			'The emission of force rays from the eyes',
+			'The psionic field neutralizes the force rays',
+			'Intuitive sense of geometry',
+			'Natural Leadership Skills',
+			'Hand-to-Hand Combat',
+			'The ability to heal thanks to lasers',
+			'Superhuman Strength',
+		],
+		isActive: true,
+		avatar: 'http://localhost:3000/assets/cyclops.png',
+		subscribers: [1],
 	},
 ]
 
@@ -156,32 +195,15 @@ app.get('/api/account/me', authenticateToken, (req, res) => {
 	if (!user) {
 		return res.status(404).json({ message: 'User not found' })
 	}
-	res.json(user)
-})
 
-// Маршрут для получения списка всех пользователей с пагинацией
-app.get('/api/users', (req, res) => {
-	// Получаем параметры страницы и размера
-	const page = parseInt(req.query.page) || 1
-	const size = parseInt(req.query.size) || 10
+	// Вычисляем количество подписчиков
+	const subscriptionsAmount = user.subscribers.length
 
-	// Рассчитываем начало и конец выборки
-	const startIndex = (page - 1) * size
-	const endIndex = startIndex + size
-
-	// Получаем нужную часть массива пользователей
-	const paginatedUsers = users.slice(startIndex, endIndex)
-
-	// Формируем ответ с информацией о пагинации
-	const response = {
-		items: paginatedUsers,
-		total: users.length,
-		page: page,
-		size: size,
-		pages: Math.ceil(users.length / size),
-	}
-
-	res.json(response)
+	// Формируем ответ, включая динамическое поле subscriptionsAmount
+	res.json({
+		...user,
+		subscriptionsAmount: subscriptionsAmount,
+	})
 })
 
 // Маршрут для получения списка подписчиков текущего пользователя
@@ -193,16 +215,46 @@ app.get('/api/account/subscribers', authenticateToken, (req, res) => {
 		return res.status(404).json({ message: 'User not found' })
 	}
 
-	// Извлекаем список подписчиков пользователя
-	const subscribers = currentUser.subscribers.map(subscriberId => {
-		return users.find(u => u.id === subscriberId)
+	// Получаем параметры пагинации
+	const page = parseInt(req.query.page) || 1
+	const size = parseInt(req.query.size) || 10
+
+	// Общий список подписчиков
+	const totalSubscribers = currentUser.subscribers.length
+
+	// Рассчитываем общее количество страниц
+	const totalPages = Math.ceil(totalSubscribers / size)
+
+	// Рассчитываем начало и конец выборки
+	const startIndex = (page - 1) * size
+	const endIndex = startIndex + size
+
+	// Извлекаем список подписчиков пользователя и форматируем под нужный ответ
+	const formattedSubscribers = currentUser.subscribers.map(subscriberId => {
+		const subscriber = users.find(u => u.id === subscriberId)
+		return {
+			id: subscriber.id,
+			avatar: subscriber.avatar,
+			nickname: subscriber.nickname,
+			subscribersAmount: subscriber.subscribers.length,
+			firstName: subscriber.name.split(' ')[0] || '',
+			lastName: subscriber.name.split(' ')[1] || '',
+			isActive: subscriber.isActive,
+			power: subscriber.power, // или используйте другое поле, если это не соответствует ожиданиям
+			description: subscriber.description,
+		}
 	})
 
-	// Возвращаем список подписчиков и их количество
-	res.json({
-		subscriptionsAmount: subscribers.length, // Количество подписчиков
-		subscribers: subscribers, // Сами подписчики
-	})
+	// Формируем ответ
+	const response = {
+		items: formattedSubscribers,
+		total: formattedSubscribers.length,
+		page: page,
+		size: formattedSubscribers.length, // количество подписчиков
+		pages: totalPages,
+	}
+
+	res.json(response)
 })
 
 app.listen(port, () => {
