@@ -32,7 +32,7 @@ const users = [
 			'Superior Marksmanship',
 		],
 		isActive: true,
-		avatar: 'http://localhost:3000/assets/deadpool.png',
+		avatar: '',
 		subscribers: [2, 3, 4, 5],
 	},
 	{
@@ -204,6 +204,28 @@ app.get('/api/account/me', authenticateToken, (req, res) => {
 		...user,
 		subscriptionsAmount: subscriptionsAmount,
 	})
+})
+
+// Маршрут для получения списка всех пользователей
+app.get('/api/users', authenticateToken, (req, res) => {
+	// Если у вас должна быть пагинация для списка пользователей, вы можете добавить ее здесь
+
+	// Возвращаем всех пользователей без паролей и чувствительных данных
+	const usersList = users.map(user => {
+		return {
+			id: user.id,
+			username: user.username,
+			name: user.name,
+			nickname: user.nickname,
+			description: user.description,
+			power: user.power,
+			avatar: user.avatar,
+			subscriptionsAmount: user.subscribers.length,
+			isActive: user.isActive,
+		}
+	})
+
+	res.json(usersList)
 })
 
 // Маршрут для получения списка подписчиков текущего пользователя
