@@ -7,9 +7,15 @@ const jwt = require('jsonwebtoken')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const User = require('./userModel')
-
+const multer = require('multer')
+const sharp = require('sharp')
+const fs = require('fs')
 const app = express()
 const port = 3000
+
+// Настройка multer для хранения файла в памяти
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 mongoose
 	.connect(process.env.MONGO_URI, {
@@ -32,6 +38,51 @@ if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
 	)
 	process.exit(1)
 }
+
+app.post(
+	'/api/account/upload_image',
+	authenticateToken,
+	upload.single('image'),
+	async (req, res) => {
+		try {
+			console.log('Received upload request for avatar')
+
+			if (!req.file) {
+				console.error('No file uploaded')
+				return res.status(400).json({ message: 'No file uploaded' })
+			}
+
+			// Генерация пути для сохранения изображения
+			const fileName = `${req.user.username}.png`
+			const filePath = path.join(__dirname, 'assets', fileName)
+
+			// Используем sharp для конвертации изображения в PNG и его сохранения
+			await sharp(req.file.buffer)
+				.resize(300, 300) // Пример изменения размера
+				.toFormat('png')
+				.toFile(filePath)
+
+			// Обновление ссылки на аватар пользователя в базе данных
+			const avatarPath = `http://localhost:3000/assets/${fileName}`
+			const user = await User.findByIdAndUpdate(
+				req.user.id,
+				{ avatar: avatarPath },
+				{ new: true }
+			)
+
+			if (!user) {
+				console.error('Error updating user avatar in database')
+				return res.status(500).json({ message: 'Error updating user avatar' })
+			}
+
+			console.log('Avatar updated successfully:', avatarPath)
+			res.status(200).json(user)
+		} catch (err) {
+			console.error('Error uploading avatar:', err)
+			res.status(500).json({ message: 'Internal Server Error' })
+		}
+	}
+)
 
 app.post('/api/login', async (req, res) => {
 	const { username, password } = req.body
