@@ -223,7 +223,7 @@ app.get('/api/profiles', async (req, res) => {
 		}
 
 		if (power) {
-			filter.power = { $in: [power] } // Фильтрация по значению в массиве power
+			filter.power = { $regex: power, $options: 'i' } // Регулярное выражение для поиска по power, игнорируя регистр и по частям
 		}
 
 		const profiles = await User.find(filter) // Используем модель User для поиска профилей

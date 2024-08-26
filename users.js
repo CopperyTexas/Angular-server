@@ -19,7 +19,6 @@ const users = [
 		subscribers: [2, 3, 4, 5],
 	},
 	{
-		id: 2,
 		username: 'Logan',
 		password: bcrypt.hashSync('456', 10),
 		name: 'James Howlett',
@@ -39,7 +38,6 @@ const users = [
 		subscribers: [1, 3],
 	},
 	{
-		id: 3,
 		username: 'user3',
 		password: bcrypt.hashSync('789', 10),
 		name: 'Tony Stark',
@@ -57,7 +55,6 @@ const users = [
 		subscribers: [],
 	},
 	{
-		id: 4,
 		username: 'user4',
 		password: bcrypt.hashSync('789', 10),
 		name: 'Max Eisenhardt',
@@ -78,7 +75,6 @@ const users = [
 		subscribers: [3],
 	},
 	{
-		id: 5,
 		username: 'user5',
 		password: bcrypt.hashSync('789', 10),
 		name: 'Scott Summers',
