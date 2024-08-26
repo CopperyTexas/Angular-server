@@ -212,6 +212,27 @@ app.patch('/api/account/me', authenticateToken, async (req, res) => {
 
 	res.json(user)
 })
+app.get('/api/profiles', async (req, res) => {
+	try {
+		const { nickname, power } = req.query
+
+		const filter = {}
+
+		if (nickname) {
+			filter.nickname = { $regex: nickname, $options: 'i' } // Регулярное выражение для фильтрации по nickname
+		}
+
+		if (power) {
+			filter.power = { $in: [power] } // Фильтрация по значению в массиве power
+		}
+
+		const profiles = await User.find(filter) // Используем модель User для поиска профилей
+		res.json({ items: profiles })
+	} catch (err) {
+		console.error('Error fetching profiles:', err) // Логирование ошибки
+		res.status(500).json({ message: err.message })
+	}
+})
 
 app.listen(port, () => {
 	console.log(`Server is running at http://localhost:${port}`)
