@@ -143,7 +143,6 @@ function authenticateToken(req, res, next) {
 		next()
 	})
 }
-
 app.get('/api/account/me', authenticateToken, async (req, res) => {
 	const user = await User.findById(req.user.id).populate('subscribers')
 	if (!user) {
@@ -156,6 +155,48 @@ app.get('/api/account/me', authenticateToken, async (req, res) => {
 app.get('/api/users', authenticateToken, async (req, res) => {
 	const users = await User.find({})
 	res.json(users)
+})
+app.post('/api/account/subscribe', authenticateToken, async (req, res) => {
+	console.log(
+		'Received subscription request for profileId:',
+		req.body.profileId
+	)
+	console.log('Authenticated user:', req.user)
+
+	try {
+		const userId = req.user.id // Используем id, а не _id
+		const { profileId } = req.body // Идентификатор профиля, на который нужно подписаться
+
+		if (userId === profileId) {
+			return res
+				.status(400)
+				.json({ message: 'You cannot subscribe to yourself' })
+		}
+
+		const user = await User.findById(userId)
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' })
+		}
+
+		// Проверяем, подписан ли уже пользователь
+		if (user.subscribers.includes(profileId)) {
+			return res
+				.status(400)
+				.json({ message: 'You are already subscribed to this user' })
+		}
+
+		// Добавляем подписку
+		user.subscribers.push(profileId)
+		await user.save()
+
+		res.status(200).json({
+			message: 'Successfully subscribed',
+			subscribers: user.subscribers,
+		})
+	} catch (err) {
+		console.error('Error subscribing to profile:', err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
 })
 
 app.get('/api/account/subscribers', authenticateToken, async (req, res) => {
