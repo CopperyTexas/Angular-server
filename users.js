@@ -94,5 +94,16 @@ const users = [
 		avatar: 'http://localhost:3000/assets/cyclops.png',
 		subscribers: [1],
 	},
+	{
+		username: 'user6',
+		password: bcrypt.hashSync('789', 10),
+		name: 'Denis Glebov',
+		nickname: 'Frontend-developer',
+		description: 'Fsdfsdfsdfsdfsdfsdf',
+		power: ['Superhuman Strength'],
+		isActive: true,
+		avatar: '',
+		subscribers: [1],
+	},
 ]
 module.exports = users
