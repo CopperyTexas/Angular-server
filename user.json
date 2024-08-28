@@ -1,35 +1,210 @@
 [
 	{
-		"username": "user6",
+		"username": "X23",
 		"password": "$2a$10$7W8rFSaXy1sB09xXeK9QWuae0R1dVp.MTgUibgO8uJ9DHo2kPzN32",
-		"name": "Denis Glebov",
-		"nickname": "Frontend-developer",
-		"description": "Fsdfsdfsdfsdfsdfsdf",
-		"power": ["Superhuman Strength"],
+		"name": "Magus",
+		"nickname": "Adam Warlock",
+		"description": "Emerging from a cocoon, the being known as Adam Warlock defies his creators' intentions and proves to be an important cosmic entity.",
+		"power": [
+			"Superhuman Agility",
+			"Superhuman Stamina",
+			"Telepathy",
+			"Energy Manipulation",
+			"Healing Factor"
+		],
 		"isActive": true,
-		"avatar": "http://localhost:3000/assets/user6.png",
+		"avatar": "http://localhost:3000/assets/adamwarlock.png",
 		"subscribers": []
 	},
 	{
-		"username": "user7",
+		"username": "Gold",
 		"password": "$2a$10$V9Dp1RO5sGcLKZ5bZ7HFgex2lvG7WbOdD1B/TvJ4UZ0kCwxMTojO6",
-		"name": "John Doe",
-		"nickname": "Backend-developer",
-		"description": "Skilled in Node.js and databases.",
-		"power": ["Database Management"],
+		"name": "Aleta Ogord",
+		"nickname": "Starhawk",
+		"description": "Aleta Ogord is the star-faring Starhawk, a heroine of living light who shares her physical being with Stakar, and a dedicated Guardian of the Galaxy.",
+		"power": [
+			"Energy Manipulation",
+			"Energy Blasts",
+			"Flight",
+			"Force Field",
+			"Hand-to-Hand Combat"
+		],
 		"isActive": true,
-		"avatar": "http://localhost:3000/assets/user7.png",
+		"avatar": "http://localhost:3000/assets/starhawk.png",
 		"subscribers": []
 	},
 	{
-		"username": "user8",
+		"username": "Wings",
 		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
-		"name": "Jane Doe",
-		"nickname": "Fullstack-developer",
-		"description": "Expert in frontend and backend technologies.",
-		"power": ["Fullstack Development"],
+		"name": "Warren Kenneth Worthington III",
+		"nickname": "Angel",
+		"description": "One of the original X-Men, the wealthy Warren Worthington III is a mutant with the power of flight and recognized by his angel-like wings.",
+		"power": [
+			"Flight",
+			"Healing Factor",
+			"Hand-to-Hand Combat",
+			"Peak Human Strength",
+			"Superhuman Stamina",
+			"Superhuman Durability"
+		],
 		"isActive": true,
-		"avatar": "http://localhost:3000/assets/user8.png",
+		"avatar": "http://localhost:3000/assets/angel.png",
+		"subscribers": []
+	},
+	{
+		"username": "Scottie",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Scott Lang",
+		"nickname": "Ant-Man",
+		"description": "Overcoming his criminal past, Scott Lang follows in the tiny, yet mighty, footsteps of his predecessor as the size-changing hero known as Ant-Man!",
+		"power": [
+			"Size and Shape Alteration",
+			"Superhuman Intelligence",
+			"Energy Blasts",
+			"Superhuman Strength",
+			"Superhuman Durability"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/antman.png",
+		"subscribers": []
+	},
+	{
+		"username": "Irish",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Sean Cassidy",
+		"nickname": "Banshee",
+		"description": "With his sonic scream and Interpol training, Banshee becomes a key member of the X-Men and trains the next generation of mutants.",
+		"power": [
+			"Sonic Scream",
+			"Flight",
+			"Sonic Blasts",
+			"Marksman",
+			"Unarmed Combat"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/banshee.png",
+		"subscribers": []
+	},
+	{
+		"username": "Hanko",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Henry Phillip McCoy",
+		"nickname": "Beast",
+		"description": "A genius scientist and scholar, Beast has a vast intellect to complement his great strength, contributing both to the X-Men and Avengers.",
+		"power": [
+			"Superhuman Strength",
+			"Superhuman Endurance",
+			"Superhuman Speed",
+			"Superhuman Durability",
+			"Healing Factor",
+			"Heightened Senses",
+			"Superhuman Agility",
+			"Genius Intelligence"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/beast.png",
+		"subscribers": []
+	},
+	{
+		"username": "Cat",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Felicia Hardy",
+		"nickname": "Black Cat",
+		"description": "Black Cat follows in the footsteps of her father learning the tricks of the trade for burglary, eventually losing her criminal ways to fight for the greater good.",
+		"power": ["Bad Luck Aura", "Probability Alteration"],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/blackcat.png",
+		"subscribers": []
+	},
+	{
+		"username": "Prince",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "T'Challa",
+		"nickname": "Black Panther",
+		"description": "T’Challa is the king of the secretive and highly advanced African nation of Wakanda - as well as the powerful warrior known as the Black Panther.",
+		"power": [
+			"Heightened Senses",
+			"Night Vision",
+			"Hand-to-Hand Combat",
+			"Superhuman Strength"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/blackpanther.png",
+		"subscribers": []
+	},
+	{
+		"username": "Nat",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Natasha Romanova",
+		"nickname": "Black Widow",
+		"description": "Despite super spy Natasha Romanoff’s checkered past, she’s become one of S.H.I.E.L.D.’s most deadly assassins and a frequent member of the Avengers.",
+		"power": ["Slowed Aging", "Superhuman Durability"],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/blackwidow.png",
+		"subscribers": []
+	},
+	{
+		"username": "Daywalker",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Eric Brooks",
+		"nickname": "Blade",
+		"description": "Himself a half-human/half-vampire, Daywalker Eric Brooks has honed his abilities to hunt down the undead who have long terrorized mankind.",
+		"power": [
+			"Superhuman Stamina",
+			"Healing Factor",
+			"Superhuman Strength",
+			"Heightened Senses",
+			"Superhuman Durability",
+			"Martial Artist",
+			"Sword-Fighting"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/blade.png",
+		"subscribers": []
+	},
+	{
+		"username": "Kansas",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Henry Camp",
+		"nickname": "Bulldozer",
+		"description": "Super Villain Henry Camp is Bulldozer, the head-butting, mystically-empowered human who joins the Wrecking Crew to commit criminal acts.",
+		"power": [
+			"Superhuman Stamina",
+			"Superhuman Strength",
+			"Superhuman Durability",
+			"Superhuman Speed",
+			"Hand-to-Hand Combat"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/bulldozer.png",
+		"subscribers": []
+	},
+	{
+		"username": "SoldierX",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Nathan Summers",
+		"nickname": "Cable",
+		"description": "Sent to the future to survive a deadly infection, the cybernetically enhanced mutant Cable returns to the present and helps the X-Men.",
+		"power": ["Telekinesis", "Telepathy", "Force Field", "Teleportation"],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/cable.png",
+		"subscribers": []
+	},
+	{
+		"username": "Blondie",
+		"password": "$2a$10$B9ROs4yFvXHpqHVKFkx6M.9s6v/SoSxCfXtFfyPvftgEokqyzsGcO",
+		"name": "Steve Rogers",
+		"nickname": "Captain America",
+		"description": "Recipient of the Super Soldier serum, World War II hero Steve Rogers fights for American ideals as one of the world’s mightiest heroes and the leader of the Avengers.",
+		"power": [
+			"Superhuman Agility",
+			"Superhuman Stamina",
+			"Superhuman Durability",
+			"Superhuman Reflexes",
+			"Superhuman Strength"
+		],
+		"isActive": true,
+		"avatar": "http://localhost:3000/assets/captainamerica.png",
 		"subscribers": []
 	}
 ]
