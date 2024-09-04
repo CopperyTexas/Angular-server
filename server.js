@@ -274,6 +274,37 @@ app.get('/api/profiles', async (req, res) => {
 		res.status(500).json({ message: err.message })
 	}
 })
+app.post('/api/account/unsubscribe', authenticateToken, async (req, res) => {
+	try {
+		const userId = req.user.id
+		const { profileId } = req.body
+
+		if (userId === profileId) {
+			return res
+				.status(400)
+				.json({ message: 'You cannot unsubscribe from yourself' })
+		}
+
+		const user = await User.findById(userId)
+		if (!user) {
+			return res.status(404).json({ message: 'User not found' })
+		}
+
+		// Удаляем подписку
+		user.subscribers = user.subscribers.filter(
+			subId => subId.toString() !== profileId
+		)
+		await user.save()
+
+		res.status(200).json({
+			message: 'Successfully unsubscribed',
+			subscribers: user.subscribers,
+		})
+	} catch (err) {
+		console.error('Error unsubscribing from profile:', err)
+		res.status(500).json({ message: 'Internal Server Error' })
+	}
+})
 
 app.listen(port, () => {
 	console.log(`Server is running at http://localhost:${port}`)
