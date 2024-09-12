@@ -28,7 +28,7 @@ mongoose
 app.use(cors())
 app.use(bodyParser.json())
 app.use('/assets', express.static(path.join(__dirname, 'assets')))
-
+app.use(express.json()) // Middleware для обработки JSON-запросов
 const JWT_SECRET = process.env.JWT_SECRET
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET
 
@@ -38,6 +38,63 @@ if (!JWT_SECRET || !JWT_REFRESH_SECRET) {
 	)
 	process.exit(1)
 }
+// Модель поста
+const Post = mongoose.model(
+	'Post',
+	new mongoose.Schema({
+		title: { type: String, required: true },
+		content: { type: String, required: true },
+		authorId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		}, // Ссылка на модель пользователя
+		createdAt: { type: Date, default: Date.now },
+	})
+)
+
+// Маршрут для получения всех постов
+app.get('/api/post', async (req, res) => {
+	try {
+		const posts = await Post.find().populate('authorId', 'username avatar') // Подгружаем данные автора
+		res.status(200).json(posts) // Возвращаем посты вместе с автором
+	} catch (error) {
+		res.status(500).json({ message: 'Ошибка при получении постов', error })
+	}
+})
+// Маршрут для получения одного поста по ID
+app.get('/api/post/:id', async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id).populate(
+			'authorId',
+			'username avatar'
+		)
+		if (!post) {
+			return res.status(404).json({ message: 'Пост не найден' })
+		}
+		res.status(200).json(post) // Возвращаем пост с данными автора
+	} catch (error) {
+		res.status(500).json({ message: 'Ошибка при получении поста', error })
+	}
+})
+// Маршрут для создания поста
+app.post('/api/post', async (req, res) => {
+	const { title, content, authorId } = req.body
+
+	// Валидация данных
+	if (!title || !content || !authorId) {
+		return res.status(400).json({ message: 'Все поля обязательны' })
+	}
+
+	try {
+		// Создание нового поста
+		const newPost = new Post({ title, content, authorId })
+		await newPost.save()
+		res.status(201).json(newPost)
+	} catch (error) {
+		res.status(500).json({ message: 'Ошибка при создании поста', error })
+	}
+})
 
 app.post(
 	'/api/account/upload_image',
